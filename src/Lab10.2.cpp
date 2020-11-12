@@ -12,11 +12,42 @@
 */
 
 #include <iostream>
+#include <pwd.h>
+#include <unistd.h>
+#include <libgen.h>
 
 using namespace std;
 
-int main()
+int main(int argc, char* argv[]/*, char* env[]*/)
 {
-    cout << "Lab 10.2\n";
+    // passwd *pswd;
+    // pswd = getpwuid(geteuid());
+    
+    // pid_t pid = getpid();
+    // string programName = basename(argv[0]);
+
+    // cout << "user is: " << pswd->pw_name << " and the user id is:" << pswd->pw_uid << '\n';
+    // cout << "count of arguments: " << argc << '\n';
+    // cout << "argument item 1: " << argv[0] << '\n';
+
+    int opt{};
+    int count{};
+    bool countFlag{false};
+    bool logFlag{false};
+    bool optErr{true};
+    string logValue;
+
+    while ((opt = getopt(argc, argv, "c:l:")) !=)
+    {
+        switch(opt)
+        {
+            case 'c':
+                countFlag = true;
+                count = atoi(optarg);
+                break;
+        }
+    }
+        
+
     return EXIT_SUCCESS;
 }
