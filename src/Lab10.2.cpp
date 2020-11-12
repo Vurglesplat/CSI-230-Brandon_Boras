@@ -7,7 +7,7 @@
 * @assignment Lecture 10.2
 * @date 11/12/2020
 * @credits
-* original makefile setup based on prof's github
+* makes use of Bilbo's demonstration in class
 *
 */
 
@@ -80,6 +80,9 @@ int main(int argc, char* argv[]/*, char* env[]*/)
     {
         return EXIT_FAILURE;
     }
+
+    
+    
 
     cout << "flags - countFlag: " << countFlag << "\nlogFlag: " << logFlag
          << "\ncount: " << count << " logfile: " << logValue 
