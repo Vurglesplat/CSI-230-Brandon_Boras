@@ -37,7 +37,7 @@ int main(int argc, char* argv[]/*, char* env[]*/)
     bool optErr{true};
     string logValue;
 
-    while ((opt = getopt(argc, argv, "c:l:")) !=)
+    while ((opt = getopt(argc, argv, "c:l:")) != EOF)
     {
         switch(opt)
         {
@@ -45,9 +45,45 @@ int main(int argc, char* argv[]/*, char* env[]*/)
                 countFlag = true;
                 count = atoi(optarg);
                 break;
+            case 'l':
+                logFlag = true;
+                logValue = optarg;
+                break;
+            default:
+                optErr = true;
+                break;
         }
     }
+
+    
+
+    if (countFlag && logFlag)
+    {
+        cout << "flags set!\n";
+        if(logValue.empty() || count == 0)
+        {
+            optErr = true;
+            cout << "option arguments are not set\n"; 
+        }
+        else
+        {
+            optErr = false;
+        }
         
+    }
+    else
+    {
+            cout << "error - flags are not set\n"; 
+    }
+    
+    if(optErr)
+    {
+        return EXIT_FAILURE;
+    }
+
+    cout << "flags - countFlag: " << countFlag << "\nlogFlag: " << logFlag
+         << "\ncount: " << count << " logfile: " << logValue 
+         << "\n optErr: " << optErr << '\n';
 
     return EXIT_SUCCESS;
 }
