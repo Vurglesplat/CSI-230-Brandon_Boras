@@ -24,9 +24,6 @@ int main(int argc, char* argv[]/*, char* env[]*/)
 {
     // passwd *pswd;
     // pswd = getpwuid(geteuid());
-    
-    // 
-
     // cout << "user is: " << pswd->pw_name << " and the user id is:" << pswd->pw_uid << '\n';
     // cout << "count of arguments: " << argc << '\n';
     // cout << "argument item 1: " << argv[0] << '\n';

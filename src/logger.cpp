@@ -29,16 +29,13 @@ bool log(std::string msg, std::string programName, std::ofstream& logFile)
         strTime[timeSize - 1] = 'I';
     }
 
-    //get the program name
-    std::string strProgramName;
-    //get the pid
-    //get the hostname (do it yourself)  gethostname(char *name, size_t len);
-    std::string strHostName;
+    char strHostName[20];
+    gethostname(strHostName, 20);
 
     if(logFile)
     {
         //write the actual log (maybe using stringstream)
-        logFile << strTime << strHostName << " " << strProgramName << "[" << pid << "]: " 
+        logFile << strTime  << ' ' << strHostName << " " << programName << "[" << pid << "]: " 
                 << msg << '\n';
         return true;
     }
