@@ -85,7 +85,7 @@ int main(int argc, char* argv[]/*, char* env[]*/)
 
                 if (kmlFlag)
                 {
-                    std::string msg = "The kmlfile is : WIP\n"; // + kmlValue + " and logfile is:" +
+                    std::string msg = "The kmlfile is :" + kmlValue + " and logfile is:" + logValue;
                     log(msg, programName, fLog);
                     fLog.close();
 
@@ -112,6 +112,11 @@ int main(int argc, char* argv[]/*, char* env[]*/)
                 cout << "couldn't open " << logValue << '\n';
                 optErr = true;
             }
+        }
+        else if (countFlag)
+        {
+            cout << "The count is :" << count << " and logfile is:" << logValue << '\n';
+
         }
         else
         {
