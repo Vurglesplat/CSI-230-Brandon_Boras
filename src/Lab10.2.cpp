@@ -87,7 +87,7 @@ int main(int argc, char* argv[]/*, char* env[]*/)
                     fLog.close();
 
                     ifstream inFile;
-                    inFile.open(kmlValue);
+                    inFile.open(kmlValue + ".csv");
                     if(inFile)
                     {
                         int recordCount = ProcessCSV(inFile, kmlValue + ".kml");
@@ -99,9 +99,12 @@ int main(int argc, char* argv[]/*, char* env[]*/)
                         }
                         else
                             optErr = true;
-
                     }
-
+                    else
+                    {
+                        cout << "couldn't open " << kmlValue + ".csv" << '\n';
+                        optErr = true;
+                    }
                 }
             }
             else
@@ -113,6 +116,7 @@ int main(int argc, char* argv[]/*, char* env[]*/)
         else if (countFlag)
         {
             cout << "The count is :" << count << " and logfile is:" << logValue << '\n';
+                            optErr = false;
 
         }
         else
@@ -136,9 +140,9 @@ int main(int argc, char* argv[]/*, char* env[]*/)
     
     
 
-    cout << "flags - countFlag: " << countFlag << "\nlogFlag: " << logFlag
-         << "\ncount: " << count << " logfile: " << logValue 
-         << "\n optErr: " << optErr << '\n';
+    // cout << "flags - countFlag: " << countFlag << "\nlogFlag: " << logFlag
+    //      << "\ncount: " << count << " logfile: " << logValue 
+    //      << "\n optErr: " << optErr << '\n';
 
     return EXIT_SUCCESS;
 }

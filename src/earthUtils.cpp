@@ -13,7 +13,7 @@
 #include "earthUtils.h"
 
 
-                    #include <iostream>
+//                    #include <iostream>
 
 
 enum class PartOfLine
@@ -43,15 +43,14 @@ int ProcessCSV(std::ifstream& inFile, std::string kmlFileName)
 
         //to discard the first line
         std::string tempTrash;
-        inFile >> tempTrash;
+        std::getline(inFile, tempTrash);
 
         while(!inFile.eof())
         {
             std::string currentLine;
             std::getline(inFile, currentLine);
+            
             std::string currentPartsData{""};
-            bool isFirstLetter{true};
-            bool isFirstWord{true};
             PartOfLine currentPartsSection = PartOfLine::CountryName;
             std::string seperatedInfo[(int)PartOfLine::NumOfParts];
             
@@ -63,7 +62,7 @@ int ProcessCSV(std::ifstream& inFile, std::string kmlFileName)
                 }
                 else 
                 {
-                    std::cout << "Current section: " << (int)currentPartsSection << " | Value: " << currentPartsData << '\n';
+                    //std::cout << "Current section: " << (int)currentPartsSection << " | Value: " << currentPartsData << '\n';
                     seperatedInfo[(int)currentPartsSection] = currentPartsData;
                     currentPartsSection = (PartOfLine)((int)currentPartsSection + 1);
                     currentPartsData.clear();
