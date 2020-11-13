@@ -15,6 +15,7 @@
 #include <pwd.h>
 #include <unistd.h>
 #include <libgen.h>
+#include "logger.h"
 
 using namespace std;
 
@@ -23,8 +24,7 @@ int main(int argc, char* argv[]/*, char* env[]*/)
     // passwd *pswd;
     // pswd = getpwuid(geteuid());
     
-    // pid_t pid = getpid();
-    // string programName = basename(argv[0]);
+    // 
 
     // cout << "user is: " << pswd->pw_name << " and the user id is:" << pswd->pw_uid << '\n';
     // cout << "count of arguments: " << argc << '\n';
@@ -36,6 +36,8 @@ int main(int argc, char* argv[]/*, char* env[]*/)
     bool logFlag{false};
     bool optErr{true};
     string logValue;
+    string programName = basename(argv[0]);
+
 
     while ((opt = getopt(argc, argv, "c:l:")) != EOF)
     {
@@ -67,13 +69,30 @@ int main(int argc, char* argv[]/*, char* env[]*/)
         }
         else
         {
-            optErr = false;
+            // logging yard
+            ofstream fLog;
+            fLog.open(logValue, ios_base::app);
+            if(fLog)
+            {
+                std::string programName = basename(argv[0]);
+                std::string msg = "The kmlfile is : WIP\n";// + kmlValue + " and logfile is:" + 
+                log(msg, programName, fLog);
+                optErr = false;
+                fLog.close();
+            }
+            else
+            {
+                cout << "couldn't open " << logValue << '\n';
+                optErr = true;
+            }
         }
         
     }
     else
     {
             cout << "error - flags are not set\n"; 
+            optErr = false;
+
     }
     
     if(optErr)

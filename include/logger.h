@@ -20,9 +20,10 @@
 * @author Bilbo Baggins
 * @date 11/12/2020
 * @param msg msg std::string containing syslog message
+* @param programName std::string containing the program name
 * @param logFile ofstream reference, validation of the file as expected
 * @return  bool based on whether the log was successfully created or not
 */
-bool log(std::string msg, std::ofstream& logFile);
+bool log(std::string msg, std::string programName, std::ofstream& logFile);
 
 #endif

@@ -11,14 +11,17 @@
 
 #include "logger.h"
 
+#include <unistd.h>
 
-bool log(std::string msg, std::ofstream& logFile)
+bool log(std::string msg, std::string programName, std::ofstream& logFile)
 {
     std::string strTime;
 
     //get the line
     time_t logTime = time(0);
     strTime = ctime(&logTime);
+
+    pid_t pid = getpid();
 
     // time of the newline
     int timeSize = strTime.size();
@@ -30,14 +33,14 @@ bool log(std::string msg, std::ofstream& logFile)
     //get the program name
     std::string strProgramName;
     //get the pid
-    //get the hostname (do it yourself)
+    //get the hostname (do it yourself)  gethostname(char *name, size_t len);
     std::string strHostName;
 
     if(logFile)
     {
         //write the actual log (maybe using stringstream)
-        //logFile << strTime << strHostName << " " << strProgramName << "[" << pid << "]: " 
-        //        << msg << '\n';
+        logFile << strTime << strHostName << " " << strProgramName << "[" << pid << "]: " 
+                << msg << '\n';
         return true;
     }
 
