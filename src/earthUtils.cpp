@@ -48,7 +48,7 @@ int ProcessCSV(std::ifstream& inFile, std::string kmlFileName)
         while(!inFile.eof())
         {
             std::string currentLine;
-            inFile >> currentLine;
+            std::getline(inFile, currentLine);
             std::string currentPartsData{""};
             bool isFirstLetter{true};
             bool isFirstWord{true};
@@ -57,16 +57,17 @@ int ProcessCSV(std::ifstream& inFile, std::string kmlFileName)
             
             for(int i = 0; i < currentLine.size(); i++)
             {
-                if(currentLine[i] == ',')
+                if(currentLine[i] != ',')
+                {
+                    currentPartsData.push_back(toupper(currentLine[i]));
+                }
+                else 
                 {
                     std::cout << "Current section: " << (int)currentPartsSection << " | Value: " << currentPartsData << '\n';
                     seperatedInfo[(int)currentPartsSection] = currentPartsData;
                     currentPartsSection = (PartOfLine)((int)currentPartsSection + 1);
                     currentPartsData.clear();
-                }
-                else // it is not the first letter of a word, so it is lowercase
-                {
-                    currentPartsData.push_back(toupper(currentLine[i]));
+
                 }
             }
             // for the last one in the line
