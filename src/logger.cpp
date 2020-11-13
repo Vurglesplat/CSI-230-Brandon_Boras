@@ -10,7 +10,6 @@
 */
 
 #include "logger.h"
-
 #include <unistd.h>
 
 bool log(std::string msg, std::string programName, std::ofstream& logFile)

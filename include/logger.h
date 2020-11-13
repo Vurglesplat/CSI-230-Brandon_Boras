@@ -9,8 +9,8 @@
 * makes use of Bilbo's demonstration in class
 */
 
-#ifndef UTIL_H
-#define UTIL_H
+#ifndef LOGGER_H
+#define LOGGER_H
 
 #include <string>
 #include <fstream>

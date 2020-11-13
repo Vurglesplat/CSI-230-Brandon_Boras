@@ -12,10 +12,11 @@
 */
 
 #include <iostream>
-#include <pwd.h>
 #include <unistd.h>
 #include <libgen.h>
+
 #include "logger.h"
+#include "earthUtils.h"
 
 using namespace std;
 
@@ -34,18 +35,24 @@ int main(int argc, char* argv[]/*, char* env[]*/)
     int count{};
     bool countFlag{false};
     bool logFlag{false};
+    bool kmlFlag{false};
     bool optErr{true};
     string logValue;
+    string kmlValue;
     string programName = basename(argv[0]);
 
 
-    while ((opt = getopt(argc, argv, "c:l:")) != EOF)
+    while ((opt = getopt(argc, argv, "c:l:k:")) != EOF)
     {
         switch(opt)
         {
             case 'c':
                 countFlag = true;
                 count = atoi(optarg);
+                break;
+            case 'k':
+                kmlFlag = true;
+                kmlValue = optarg;
                 break;
             case 'l':
                 logFlag = true;
@@ -59,15 +66,15 @@ int main(int argc, char* argv[]/*, char* env[]*/)
 
     
 
-    if (countFlag && logFlag)
+    if (countFlag && logFlag || (logFlag && kmlFlag))
     {
         cout << "flags set!\n";
-        if(logValue.empty() || count == 0)
+        if(logValue.empty() || (countFlag && count == 0))
         {
             optErr = true;
             cout << "option arguments are not set\n"; 
         }
-        else
+        else if (!kmlValue.empty())
         {
             // logging yard
             ofstream fLog;
@@ -75,10 +82,30 @@ int main(int argc, char* argv[]/*, char* env[]*/)
             if(fLog)
             {
                 std::string programName = basename(argv[0]);
-                std::string msg = "The kmlfile is : WIP\n";// + kmlValue + " and logfile is:" + 
-                log(msg, programName, fLog);
-                optErr = false;
-                fLog.close();
+
+                if (kmlFlag)
+                {
+                    std::string msg = "The kmlfile is : WIP\n"; // + kmlValue + " and logfile is:" +
+                    log(msg, programName, fLog);
+                    fLog.close();
+
+                    ifstream inFile;
+                    inFile.open(kmlValue);
+                    if(inFile)
+                    {
+                        int recordCount = ProcessCSV(inFile, kmlValue + ".kml");
+                        inFile.close();
+                        if(recordCount != -1)
+                        {
+                            cout << recordCount << " records processed.\n";
+                            optErr = false;
+                        }
+                        else
+                            optErr = true;
+
+                    }
+
+                }
             }
             else
             {
@@ -86,7 +113,11 @@ int main(int argc, char* argv[]/*, char* env[]*/)
                 optErr = true;
             }
         }
-        
+        else
+        {
+            cout << "error with ksm file name";
+            optErr = true;
+        }
     }
     else
     {
