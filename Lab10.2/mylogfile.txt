@@ -1,0 +1,11 @@
+Fri Nov 13 02:43:08 2020I pop-os main[19072]: The kmlfile is :concap and logfile is:mylogfile.txt
+Fri Nov 13 02:53:44 2020I pop-os main[19439]: The kmlfile is :concap and logfile is:mylogfile.txt
+Fri Nov 13 02:54:28 2020I pop-os main[19451]: The kmlfile is :concap.ksm and logfile is:mylogfile.txt
+Fri Nov 13 02:58:56 2020I pop-os main[19614]: The kmlfile is :concap and logfile is:mylogfile.txt
+Fri Nov 13 02:59:44 2020I pop-os main[19689]: The kmlfile is :../concap and logfile is:mylogfile.txt
+Fri Nov 13 02:59:52 2020I pop-os main[19697]: The kmlfile is :./../concap and logfile is:mylogfile.txt
+Fri Nov 13 03:01:11 2020I pop-os main[19753]: The kmlfile is :concap and logfile is:mylogfile.txt
+Fri Nov 13 03:02:17 2020I pop-os main[19814]: The kmlfile is :concap and logfile is:mylogfile.txt
+Fri Nov 13 03:10:36 2020I pop-os main[19912]: The kmlfile is :concap and logfile is:mylogfile.txt
+Fri Nov 13 03:13:14 2020I pop-os main[19997]: The kmlfile is :concap and logfile is:mylogfile.txt
+Fri Nov 13 03:17:37 2020I pop-os main[20119]: The kmlfile is :concap and logfile is:mylogfile.txt
