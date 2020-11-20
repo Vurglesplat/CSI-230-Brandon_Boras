@@ -1,13 +1,14 @@
 /**
 * @file main.cpp
-* @brief  Week 10, C++ Review and Warmup from CSI140
+* @brief  lab 11.2 main file, focused on implementing our own boost library,
+*          in this case I made a program that collects 3 flags of the primary colours+bools and outputs what colour they would generate
 *
 * @author Brandon Boras
 * @assignment Lab11.2
 * @date 11/19/2020
 * @credits
 * original makefile setup based on prof's github
-* used boost's page for program options at https://theboostcpplibraries.com/boost.program_options as a basis for the menu and choice selection system
+* used boost's page for program options at https://theboostcpplibraries.com/boost.program_options as a basis for the parameter system
 */
 
 #include <boost/program_options.hpp>
@@ -16,12 +17,6 @@
 
 using namespace boost::program_options;
 using namespace boost::logic;
-
-
-void on_age(int age)
-{
-  std::cout << "On age: " << age << '\n';
-}
 
 int main(int argc, const char *argv[])
 {
@@ -83,9 +78,14 @@ int main(int argc, const char *argv[])
     }
 
     if(indeterminate(redValue) || indeterminate(blueValue) || indeterminate(yellowValue) ) // easy checking for whether it was submitted or not
-        std::cout << "Some value wasn't submitted\n";
+    {
+        std::cout << "Error: A color was not submitted\n";
+        return EXIT_FAILURE;
+    }
     else
     {
+        std::cout << "Correct color flags were set, currently determining color.\n";
+
         if(redValue)
         {
             if (blueValue)
@@ -193,5 +193,7 @@ int main(int argc, const char *argv[])
     std::cerr << ex.what() << '\n';
     return EXIT_FAILURE;
   }
+
+
   return EXIT_SUCCESS;
 }
