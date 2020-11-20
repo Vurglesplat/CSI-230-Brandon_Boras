@@ -17,6 +17,7 @@
 using namespace boost::program_options;
 using namespace boost::logic;
 
+
 void on_age(int age)
 {
   std::cout << "On age: " << age << '\n';
@@ -55,36 +56,28 @@ int main(int argc, const char *argv[])
   {
     options_description desc{"Options"};
     desc.add_options()
-      ("help,h", "Help screen")
       ("red", value<bool>()->default_value(false), "Red")
       ("blue", value<bool>(), "Blue")
-      ("yellow", value<bool>()->default_value(false), "Yellow");
+      ("yellow", value<bool>(), "Yellow")
+      ("light", value<bool>(), "Light");
 
     variables_map vm;
     store(parse_command_line(argc, argv, desc), vm);
     notify(vm);
 
-    if (vm.count("help"))
-      std::cout << desc << '\n';
-    else if (vm.count("red"))
+    if (vm.count("red"))
     {
         redValue = vm["red"].as<bool>();
-        if (vm["red"].as<bool>())
-            std::cout << "red was read as yes\n";
     }
-    else if (vm.count("blue"))
+    if (vm.count("blue"))
     {
         blueValue = vm["blue"].as<bool>();
-        if (vm["blue"].as<bool>())
-            std::cout << "blue was read as yes\n";
     }
-    else if (vm.count("yellow"))
+    if (vm.count("yellow"))
     {
         yellowValue = vm["yellow"].as<bool>();
-        if (vm["yellow"].as<bool>())
-            std::cout << "yellow was read as yes\n";
     }
-    else if (vm.count("light"))
+    if (vm.count("light"))
     {
         areColoursLightBased = vm["light"].as<bool>();
     }
@@ -113,6 +106,11 @@ int main(int argc, const char *argv[])
                         return EXIT_FAILURE;
                     }
                 }
+                else
+                {
+                    finalColor = VIOLET;
+                }
+                
             }
             else if (yellowValue) // but not blue
             {
@@ -133,7 +131,6 @@ int main(int argc, const char *argv[])
             {
                 finalColor = BLUE;
             }
-            
         }
         else if (yellowValue) // but no red nor blue
         {
@@ -154,18 +151,42 @@ int main(int argc, const char *argv[])
                 std::cout << "ERROR: Cannot determine the colour of the absence or presence of all primary colours unless \"light\" is given also passed \n";
                 return EXIT_FAILURE;
             }
-            
         }
-        
     }
-    
-    // cout << "The final color is: ";
-    // switch(finalColor)
-    // {
 
-    // }
+    std::cout << "The final color is: ";
 
-
+    switch (finalColor)
+    {
+    case BLACK:
+        std::cout << "black\n";
+        break;
+    case WHITE:
+        std::cout << "white\n";
+        break;
+    case RED:
+        std::cout << "red\n";
+        break;
+    case BLUE:
+        std::cout << "blue\n";
+        break;
+    case YELLOW:
+        std::cout << "yellow\n";
+        break;
+    case ORANGE:
+        std::cout << "orange\n";
+        break;
+    case VIOLET:
+        std::cout << "violet\n";
+        break;
+    case GREEN:
+        std::cout << "green\n";
+        break;
+    default:
+        std::cout << "ERROR, COLOUR COULD NOT BE DETERMINED\n";
+        return EXIT_FAILURE;
+        break;
+    }
   }
   catch (const error &ex)
   {
