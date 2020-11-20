@@ -24,13 +24,20 @@ void on_age(int age)
 
 int main(int argc, const char *argv[])
 {
-    tribool redValue;
-    tribool blueValue;
-    tribool yellowValue;
+    tribool redValue{indeterminate};
+    tribool blueValue{indeterminate};
+    tribool yellowValue{indeterminate};
+    tribool areColoursLightBased{indeterminate};
 
     //using the first number as a categorizer instead of representing 10s
     enum COLOR
     {
+        ERROR = -1,
+
+        // base colours and/or all additive colours (based on light or dye based colours)
+        BLACK = 00,
+        WHITE, 
+
         //primary
         RED = 10,
         BLUE,
@@ -42,14 +49,16 @@ int main(int argc, const char *argv[])
         GREEN,
     };
 
+    COLOR finalColor{ERROR};
 
   try
   {
     options_description desc{"Options"};
     desc.add_options()
       ("help,h", "Help screen")
-      ("pi", value<float>()->default_value(3.14f), "Pi")
-      ("age", value<int>()->notifier(on_age), "Age");
+      ("red", value<bool>()->default_value(false), "Red")
+      ("blue", value<bool>(), "Blue")
+      ("yellow", value<bool>()->default_value(false), "Yellow");
 
     variables_map vm;
     store(parse_command_line(argc, argv, desc), vm);
@@ -58,14 +67,110 @@ int main(int argc, const char *argv[])
     if (vm.count("help"))
       std::cout << desc << '\n';
     else if (vm.count("red"))
-      std::cout << "Age: " << vm["age"].as<int>() << '\n';
+    {
+        redValue = vm["red"].as<bool>();
+        if (vm["red"].as<bool>())
+            std::cout << "red was read as yes\n";
+    }
     else if (vm.count("blue"))
-      std::cout << "Age: " << vm["age"].as<int>() << '\n';
+    {
+        blueValue = vm["blue"].as<bool>();
+        if (vm["blue"].as<bool>())
+            std::cout << "blue was read as yes\n";
+    }
     else if (vm.count("yellow"))
-      std::cout << "Pi: " << vm["pi"].as<float>() << '\n';
+    {
+        yellowValue = vm["yellow"].as<bool>();
+        if (vm["yellow"].as<bool>())
+            std::cout << "yellow was read as yes\n";
+    }
+    else if (vm.count("light"))
+    {
+        areColoursLightBased = vm["light"].as<bool>();
+    }
+
+    if(indeterminate(redValue) || indeterminate(blueValue) || indeterminate(yellowValue) ) // easy checking for whether it was submitted or not
+        std::cout << "Some value wasn't submitted\n";
+    else
+    {
+        if(redValue)
+        {
+            if (blueValue)
+            {
+                if (yellowValue) // all are present
+                {
+                    if (areColoursLightBased)
+                    {
+                        finalColor = WHITE;
+                    }
+                    else if (areColoursLightBased == false)
+                    {
+                        finalColor = BLACK;
+                    }
+                    else // this is a nice use for tribool as it helps us avoid the use of a 2nd bool for whether or not this fringe case was even entered
+                    {
+                        std::cout << "ERROR: Cannot determine the colour of the absence or presence of all primary colours unless \"light\" is given also passed \n";
+                        return EXIT_FAILURE;
+                    }
+                }
+            }
+            else if (yellowValue) // but not blue
+            {
+                finalColor = ORANGE;
+            }
+            else // if only red
+            {
+                finalColor = RED;
+            }
+        }
+        else if (blueValue) // but no red
+        {
+            if (yellowValue)
+            {
+                finalColor = GREEN;
+            }
+            else // only blue
+            {
+                finalColor = BLUE;
+            }
+            
+        }
+        else if (yellowValue) // but no red nor blue
+        {
+            finalColor = YELLOW;
+        }
+        else // with none
+        {
+            if (areColoursLightBased)
+            {
+                finalColor = BLACK;
+            }
+            else if (areColoursLightBased == false)
+            {
+                finalColor = WHITE;
+            }
+            else // this is a nice use for tribool as it helps us avoid the use of a 2nd bool for whether or not this fringe case was even entered
+            {
+                std::cout << "ERROR: Cannot determine the colour of the absence or presence of all primary colours unless \"light\" is given also passed \n";
+                return EXIT_FAILURE;
+            }
+            
+        }
+        
+    }
+    
+    // cout << "The final color is: ";
+    // switch(finalColor)
+    // {
+
+    // }
+
+
   }
   catch (const error &ex)
   {
     std::cerr << ex.what() << '\n';
+    return EXIT_FAILURE;
   }
+  return EXIT_SUCCESS;
 }
