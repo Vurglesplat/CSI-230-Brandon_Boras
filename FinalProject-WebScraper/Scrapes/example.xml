@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<?xml version="1.0" encoding="UTF-8" ?>
 <head>
 <meta name="generator" content=
 "HTML Tidy for HTML5 for Linux version 5.6.0" />
@@ -36,7 +35,6 @@
     }
 /*]]>*/
 </style>
-</head>
 <body>
 <div>
 <h1>Example Domain</h1>
@@ -47,4 +45,4 @@ asking for permission.</p>
 information...</a></p>
 </div>
 </body>
-</html>
+</head>

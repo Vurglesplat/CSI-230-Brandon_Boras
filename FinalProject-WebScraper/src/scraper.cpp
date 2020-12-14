@@ -116,7 +116,8 @@ int main(int argc, const char *argv[])
                 else
                 {
                     fclose(ofile);
-                    ConvertToXML("./Scrapes/", currentSiteName);                    
+                    ConvertToXML("./Scrapes/", currentSiteName);  
+                    //PrintSection();                  
                 }
                 
 
