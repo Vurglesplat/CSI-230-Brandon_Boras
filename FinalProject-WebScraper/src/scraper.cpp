@@ -50,10 +50,13 @@ int main(int argc, const char *argv[])
 
     // Creating a directory
     if (mkdir("Scrapes", 0777) == -1)
-        if (errno != EEXIST) // if the folder already exists, assume familiarity with the program
+    {
+        if (errno!= EEXIST) // if the folder already exists, assume familiarity with the program
             cerr << "Error :  " << strerror(errno) << endl;
         else
             cout << "Created a directory for the scrape results.\n\n";
+
+    }      
     try
     {
         options_description desc{"Options"};
@@ -68,10 +71,6 @@ int main(int argc, const char *argv[])
 
         if (vm.count("help"))
             std::cout << desc << '\n';
-        // else if (vm.count("age"))
-        //     std::cout << "Age: " << vm["age"].as<int>() << '\n';
-        // else if (vm.count("pi"))
-        //     std::cout << "Pi: " << vm["pi"].as<float>() << '\n';
         else if (vm.count("url"))
         {
             int maxScrapes = DEFAULT_MAX_NUM_OF_SITES;
@@ -90,7 +89,6 @@ int main(int argc, const char *argv[])
             std::cout << "URL GOT AS \"" << currentURL << '\"' << endl;
             sitesToScrape[numOfSitesToScrape++] = currentURL;
 
-            // the actual curl process
             curl = curl_easy_init();
             /*in case libcurl needs to follow redirection */
             curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
