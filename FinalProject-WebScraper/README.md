@@ -28,4 +28,10 @@ Got most of the actual arguments and variables passed to the program working, se
 Been really suffering getting to parsing the data, just going to resort to using system commands instead of functions since I can't find an html parser that could be easily installed
 
 
+#### Dec 14, 2:30PM
+Tidy doesn't seem to be actually translating my test page of example.com, but oh well,I've already spent too much time getting it to this point where it should work, I'll just mess with the file's document headers to get it to think it's an XML.
+
+
+
+
 
