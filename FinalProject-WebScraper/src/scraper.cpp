@@ -14,17 +14,19 @@
 */
 
 #include <boost/program_options.hpp>
-//#include <boost/logic/tribool.hpp>
+//#include <boost/sudlogic/tribool.hpp>
 #include <iostream>
 #include <string>
-
+#include <stdio.h>
 //for directory creation
 #include <bits/stdc++.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 
+
 // for actually accessing the data from the web page
 #include <curl/curl.h>
+#include "dataHandler.h"
 
 using namespace boost::program_options;
 using namespace std;
@@ -39,7 +41,9 @@ int main(int argc, const char *argv[])
 {
     string currentURL;
     string sitesAlreadyScraped[DEFAULT_MAX_NUM_OF_SITES];
+    int numOfSitesAlreadyScraped{0};
     string sitesToScrape[DEFAULT_MAX_NUM_OF_SITES];
+    int numOfSitesToScrape{0};
 
     CURL *curl;
     CURLcode res;
@@ -70,34 +74,56 @@ int main(int argc, const char *argv[])
         //     std::cout << "Pi: " << vm["pi"].as<float>() << '\n';
         else if (vm.count("url"))
         {
+            int maxScrapes = DEFAULT_MAX_NUM_OF_SITES;
+               
+
             if (vm.count("scrapenum")) // nested since it's kind of pointless without a url
-                std::cout << "Set the new max number of sites to scrape: " << vm["scrapenum"].as<int>() << '\n';
+            {
+                maxScrapes = vm["scrapenum"].as<int>();
+                std::cout << "Set the new max number of sites to scrape: " << maxScrapes << '\n';
+            }
 
-            std::cout << "URL GOT AS \"" << vm["url"].as<string>() << "\"\n";
 
+            currentURL = vm["url"].as<string>();
+
+
+            std::cout << "URL GOT AS \"" << currentURL << '\"' << endl;
+            sitesToScrape[numOfSitesToScrape++] = currentURL;
 
             // the actual curl process
             curl = curl_easy_init();
-            if (curl)
-            {
-                curl_easy_setopt(curl, CURLOPT_URL, "https://example.com");
+            /*in case libcurl needs to follow redirection */
+            curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 
-                /* example.com is redirected, so we tell libcurl to follow redirection */
-                curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+            while (curl && (numOfSitesToScrape > 0 && numOfSitesAlreadyScraped < maxScrapes))
+            {                  
+                    
+                currentURL = sitesToScrape[numOfSitesToScrape - 1];
+                string currentSiteName = Clean(currentURL);
 
-                // handles where the code is output to
-                FILE *f = fopen("target.txt", "wb");
-                curl_easy_setopt(curl, CURLOPT_WRITEDATA, f);
+                curl_easy_setopt(curl, CURLOPT_URL, currentURL.c_str());
 
+                string wholePath = "./Scrapes/" + Clean(currentSiteName) + ".html";
+                FILE* ofile = fopen(wholePath.c_str(), "wb");
+                curl_easy_setopt(curl, CURLOPT_WRITEDATA, ofile);
+                
                 /* Perform the request, res will get the return code */
                 res = curl_easy_perform(curl);
                 /* Check for errors */
                 if (res != CURLE_OK)
                     fprintf(stderr, "curl_easy_perform() failed: %s\n",
                             curl_easy_strerror(res));
+                else
+                {
+                    fclose(ofile);
+                    ConvertToXML("./Scrapes/", currentSiteName);                    
+                }
+                
 
-                curl_easy_cleanup(curl);
+                sitesAlreadyScraped[numOfSitesAlreadyScraped++] = currentURL;
+                numOfSitesToScrape--;
             }
+            curl_easy_cleanup(curl);
         }
     }
     catch (const error &ex)

@@ -14,17 +14,20 @@
 #define DATA_HANDLER_H
 
 #include <string>
-#include <fstream>
+//#include <libxml2/libxml/parser.h>
+//#include <libxml2/libxml/tree.h>
+
+using namespace std;
 
 /**
-* @brief  creats a discrete syslog message
-* @author Bilbo Baggins
-* @date 11/12/2020
-* @param msg msg std::string containing syslog message
-* @param programName std::string containing the program name
-* @param logFile ofstream reference, validation of the file as expected
-* @return  bool based on whether the log was successfully created or not
+* @brief removes various identifiers (".com", "https://") from a string for collecting the website's name
+* @author Brandon Boras
+* @date 12/14/2020
+* @param rawURL std::string the string to clean
+* @return  string of the now cleaned string
 */
-bool log(std::string msg, std::string programName, std::ofstream& logFile);
+string Clean(string rawURL);
+void ConvertToXML(string path, string fileName);
+
 
 #endif
