@@ -46,12 +46,3 @@ void ConvertToXML(string path, string fileName)
     int exitcode = system(systemCommand.c_str());
     //return oss.str();
 }
-
-void PrintSection(string sectionName, string filePath)
-{
-    // remove the header and the html wrapper
-    // add a BIIIG wrapper to the whole thing
-    string systemCommand = "xmllint --xpath \"//head/title/text()\" Scrapes/example.xml";
-    cout << "sys command = " << systemCommand << endl;
-    int exitcode = system(systemCommand.c_str());
-}

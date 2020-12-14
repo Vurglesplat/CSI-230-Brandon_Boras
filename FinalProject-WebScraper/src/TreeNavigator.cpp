@@ -9,14 +9,36 @@
 * 
 */
 
-#include "dataHandler.h"
+#include <string.h>
 #include <fstream>
 #include <sstream>
-#include <iterator>
-#include <algorithm>
-#include <cstring>
+#include <iostream>
 
                     #include <iostream>
+                    using namespace std;
+
+void HardConvertToXML(string filePath)
+{
+    fstream theFile(filePath.c_str());
+    stringstream fileData;
+
+    fileData << "<?xml version=\"1.0 encoding=\"ISO-8859-1\"?>";
+    fileData << "<mainBody>";
+
+    fileData << theFile.rdbuf();
+    string htmlHeader = "<!DOCTYPE html>";
+
+    string currentLine;
+    while (getline(theFile, currentLine)) 
+    {
+        // write all lines to temp other than the line marked for erasing
+        if (currentLine != htmlHeader) // 
+            fileData << currentLine << std::endl;
+    }
+
+    fileData << "</mainBody>";
+}
+
 
 void PrintSection(string sectionName, string filePath)
 {
