@@ -5,8 +5,8 @@ BIN     := bin
 SRC     := src
 INCLUDE := include
 
-LIBRARIES   := -lboost_program_options
-EXECUTABLE  := main
+LIBRARIES   := -lboost_program_options -lcurl
+EXECUTABLE  := scraper
 
 
 all: $(BIN)/$(EXECUTABLE)
