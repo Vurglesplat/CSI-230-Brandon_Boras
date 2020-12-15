@@ -1,5 +1,5 @@
 /**
-* @file dataHandler.cpp
+* @file DataHandler.cpp
 * @brief  gets the html source and seperates the infomation into seperate
 * and stores them
 *
@@ -10,7 +10,7 @@
 * 
 */
 
-#include "dataHandler.h"
+#include "DataHandler.h"
 #include <fstream>
 #include <sstream>
 #include <iterator>
@@ -36,7 +36,7 @@ string Clean(string rawURL)
 
 
 
-void ConvertToXML(string path, string fileName)
+void SoftConvertToXML(string path, string fileName)
 {
     
     ostringstream oss;

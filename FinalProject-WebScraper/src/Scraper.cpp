@@ -1,5 +1,5 @@
 /**
-* @file scraper.cpp
+* @file Scraper.cpp
 * @brief  Assignment 12.2 A rudimentary webscraper which collects and stores the data from
 * a webstie that is passed to it
 *
@@ -23,10 +23,10 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-
 // for actually accessing the data from the web page
 #include <curl/curl.h>
-#include "dataHandler.h"
+#include "DataHandler.h"
+#include "TreeNavigator.h"
 
 using namespace boost::program_options;
 using namespace std;
@@ -51,12 +51,11 @@ int main(int argc, const char *argv[])
     // Creating a directory
     if (mkdir("Scrapes", 0777) == -1)
     {
-        if (errno!= EEXIST) // if the folder already exists, assume familiarity with the program
+        if (errno != EEXIST) // if the folder already exists, assume familiarity with the program
             cerr << "Error :  " << strerror(errno) << endl;
         else
             cout << "Created a directory for the scrape results.\n\n";
-
-    }      
+    }
     try
     {
         options_description desc{"Options"};
@@ -74,7 +73,6 @@ int main(int argc, const char *argv[])
         else if (vm.count("url"))
         {
             int maxScrapes = DEFAULT_MAX_NUM_OF_SITES;
-               
 
             if (vm.count("scrapenum")) // nested since it's kind of pointless without a url
             {
@@ -82,9 +80,7 @@ int main(int argc, const char *argv[])
                 std::cout << "Set the new max number of sites to scrape: " << maxScrapes << '\n';
             }
 
-
             currentURL = vm["url"].as<string>();
-
 
             std::cout << "URL GOT AS \"" << currentURL << '\"' << endl;
             sitesToScrape[numOfSitesToScrape++] = currentURL;
@@ -94,17 +90,17 @@ int main(int argc, const char *argv[])
             curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 
             while (curl && (numOfSitesToScrape > 0 && numOfSitesAlreadyScraped < maxScrapes))
-            {                  
-                    
+            {
+
                 currentURL = sitesToScrape[numOfSitesToScrape - 1];
                 string currentSiteName = Clean(currentURL);
 
                 curl_easy_setopt(curl, CURLOPT_URL, currentURL.c_str());
 
                 string wholePath = "./Scrapes/" + Clean(currentSiteName) + ".html";
-                FILE* ofile = fopen(wholePath.c_str(), "wb");
+                FILE *ofile = fopen(wholePath.c_str(), "wb");
                 curl_easy_setopt(curl, CURLOPT_WRITEDATA, ofile);
-                
+
                 /* Perform the request, res will get the return code */
                 res = curl_easy_perform(curl);
                 /* Check for errors */
@@ -114,10 +110,21 @@ int main(int argc, const char *argv[])
                 else
                 {
                     fclose(ofile);
-                    ConvertToXML("./Scrapes/", currentSiteName);  
-                    //PrintSection();                  
+                    SoftConvertToXML("./Scrapes/", currentSiteName);
+
+                    fstream theFile(("./Scrapes/" + currentSiteName + ".xml").c_str());
+                    string currentLine;
+                    while (getline(theFile, currentLine))
+                    {
+                        // write all lines to temp other than the line marked for erasing
+                        if (currentLine == HTML_HEADER)
+                        {
+                            theFile.close();
+                            HardConvertToXML("./Scrapes/" + currentSiteName + ".xml");
+                            break;
+                        }
+                    }
                 }
-                
 
                 sitesAlreadyScraped[numOfSitesAlreadyScraped++] = currentURL;
                 numOfSitesToScrape--;

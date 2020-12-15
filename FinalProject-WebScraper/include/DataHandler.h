@@ -1,5 +1,5 @@
 /**
-* @file dataHandler.h
+* @file DataHandler.h
 * @brief  gets the html source and seperates the infomation into seperate
 * and stores them
 *
@@ -27,7 +27,7 @@ using namespace std;
 * @return  string of the now cleaned string
 */
 string Clean(string rawURL);
-void ConvertToXML(string path, string fileName);
+void SoftConvertToXML(string path, string fileName);
 
 
 #endif

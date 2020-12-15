@@ -9,6 +9,7 @@
 * 
 */
 
+#include "TreeNavigator.h"
 #include <string.h>
 #include <fstream>
 #include <sstream>
@@ -16,6 +17,8 @@
 
                     #include <iostream>
                     using namespace std;
+
+
 
 void HardConvertToXML(string filePath)
 {
@@ -26,24 +29,26 @@ void HardConvertToXML(string filePath)
     fileData << "<mainBody>";
 
     fileData << theFile.rdbuf();
-    string htmlHeader = "<!DOCTYPE html>";
 
     string currentLine;
     while (getline(theFile, currentLine)) 
     {
         // write all lines to temp other than the line marked for erasing
-        if (currentLine != htmlHeader) // 
+        if (currentLine != HTML_HEADER) // 
             fileData << currentLine << std::endl;
     }
 
     fileData << "</mainBody>";
+    theFile.close();
+
+    theFile.open(filePath.c_str());
+    theFile << fileData.rdbuf();
+    theFile.close();
 }
 
 
 void PrintSection(string sectionName, string filePath)
 {
-    // remove the header and the html wrapper
-    // add a BIIIG wrapper to the whole thing
     string systemCommand = "xmllint --xpath \"//head/title/text()\" Scrapes/example.xml";
     cout << "sys command = " << systemCommand << endl;
     int exitcode = system(systemCommand.c_str());
