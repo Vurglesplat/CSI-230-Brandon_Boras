@@ -31,6 +31,9 @@ Been really suffering getting to parsing the data, just going to resort to using
 #### Dec 14, 2:30PM
 Tidy doesn't seem to be actually translating my test page of example.com, but oh well,I've already spent too much time getting it to this point where it should work, I'll just mess with the file's document headers to get it to think it's an XML.
 
+#### Dec 14, 4:00PM
+Work shift at the worst possible time, doing some rough cleaning and quick updates whenever I get the chance.
+
 
 
 
