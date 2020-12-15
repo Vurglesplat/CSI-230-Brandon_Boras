@@ -5,7 +5,8 @@ A relatively simple webscraper that saves the contents of a web page to a browse
 ### Usage Instructions
  * `--help` or `-h` to get help from the program
  * `--url` or `--URL` to send the specific URL to start with
- * `--scrapenum`, `--num` or `-n` to set the max number of sites to recursively scrape (default 10)
+ * (cut from the current build due to not being able to implement) `-section` or  `-s` Displays a specific section that is passed to the script
+ * (also cut `--scrapenum`, `--num` or `-n` to set the max number of sites to recursively scrape (default 10)
 
 ### Dependencies
  * tidy, installed via `sudo apt install tidy`, this was used via `system` calls as libtidy seemed to be a nightmare to manually compile and the method legit made me question whether I was potentially opening myself up to a virus ([here](http://tidy.sourceforge.net/libintro.html))
@@ -36,5 +37,6 @@ Work shift at the worst possible time, doing some rough cleaning and quick updat
 #### Dec 14 11:15PM
 Just putting the finishing touches and cleaning on it now, this is already incredibly wacky in how it's implemented, so unless I got a lot of time I don't see more features making this more presentable.
 
-
+#### Dec 15 12:12AM
+Welp, cutting those last few features was pretty brutal, but I need to get this in, I've basically put about 30 hours into this thing, I have to call it quits somewhere.
 
